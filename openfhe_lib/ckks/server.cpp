@@ -75,10 +75,10 @@ void load_client_encrypted_weights() {
         global `std::vector< Ciphertext<DCRTPoly> > enc_weights;`
     */
     std::vector< std::string > paths = {
-        "/enc_weight_client1.txt",
-        "/enc_weight_client2.txt",
-        "/enc_weight_client3.txt",
-        "/enc_weight_client4.txt"
+        "/content/Federated-Learning-meets-Homomorphic-Encryption/data/ckks/enc_weight_client1.txt",
+        "/content/Federated-Learning-meets-Homomorphic-Encryption/data/ckks/enc_weight_client2.txt",
+        "/content/Federated-Learning-meets-Homomorphic-Encryption/data/ckks/enc_weight_client3.txt",
+        "/content/Federated-Learning-meets-Homomorphic-Encryption/data/ckks/enc_weight_client4.txt"
     };
 
     for (auto path: paths) {
@@ -99,7 +99,7 @@ void aggregator(std::vector< Ciphertext<DCRTPoly> >encrypted_weights, double n) 
     auto result = CC->EvalMult(sum, 1.0/n);
     
     // saving server result
-    if (!Serial::SerializeToFile(DATAFOLDER + "/enc_aggregator_weight_server.txt", result, SerType::BINARY)) {
+    if (!Serial::SerializeToFile(DATAFOLDER + "/content/Federated-Learning-meets-Homomorphic-Encryption/data/ckks/enc_aggregator_weight_server.txt", result, SerType::BINARY)) {
         std::cerr << " Error writing ciphertext" << std::endl;
     }
 }

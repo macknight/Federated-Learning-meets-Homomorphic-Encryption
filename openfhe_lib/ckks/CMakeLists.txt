@@ -20,6 +20,8 @@ include_directories( ${OpenFHE_INCLUDE} )
 include_directories( ${OpenFHE_INCLUDE}/third-party/include )
 include_directories( ${OpenFHE_INCLUDE}/core )
 include_directories( ${OpenFHE_INCLUDE}/pke )
+include_directories( ${OpenFHE_INCLUDE}/binfhe )
+include_directories( ${OpenFHE_INCLUDE}/cereal )
 
 ### add directories for other OpenFHE modules as needed for your project
 link_directories( ${OpenFHE_LIBDIR} )
