@@ -88,13 +88,17 @@ void load_client_encrypted_weights() {
     }
 }
 
-void aggregator(std::vector< Ciphertext<DCRTPoly> >encrypted_weights, int64_t n) {
+void aggregator(std::vector< Ciphertext<DCRTPoly> > encrypted_weights, double n) {
     /*
-        This function peform weights aggregation (federated learning concept)
+        This function performs weights aggregation (federated learning concept).
+        The averaged model is computed homomorphically by summing all encrypted
+        weights and multiplying by 1/n.
     */
-    auto result = encrypted_weights[0];
-    for(int i=1; i<encrypted_weights.size(); ++i)
-        result = CC->EvalAdd(result, encrypted_weights[i]);
+    auto sum = encrypted_weights[0];
+    for (size_t i = 1; i < encrypted_weights.size(); ++i)
+        sum = CC->EvalAdd(sum, encrypted_weights[i]);
+
+    auto result = CC->EvalMult(sum, 1.0 / n);
 
     // saving server result
     if (!Serial::SerializeToFile(DATAFOLDER + "/enc_aggregator_weight_server.txt", result, SerType::BINARY)) {
@@ -108,12 +112,15 @@ int main(int argc, char* argv[]) {
     load_crypto_context(CC);
     load_public_key(serverPubKey);
     load_mult_key();
-    
-    // load clients's encrypted weights
+
+    // load clients' encrypted weights
     load_client_encrypted_weights();
-    
+
+    double n_hospitals = 4.0;
+    if (argc > 1)
+        n_hospitals = std::stod(argv[1]);
+
     // perform aggregation
-    int64_t n_hospitals = 4;
     aggregator(enc_weights, n_hospitals);
     return 0;
 }

@@ -28,10 +28,10 @@ def decrypt_weights(cipher_file) -> list[float]:
     """
     
     stdout = subprocess.run([f"{cwd}/build/client", cipher_file], capture_output=True).stdout.decode()
-    return [float(int(w) / (4 * WW)) for w in stdout.split("@")]
+    return [float(int(w) / WW) for w in stdout.split("@")]
 
-def aggregator():
+def aggregator(n_hospitals: int):
     """ This function will be used by server to calculate aggregated global model's weights by applying
         homomorphic encryption to encrypted local model's weights of clients
     """
-    subprocess.run([f"{cwd}/build/server"])
+    subprocess.run([f"{cwd}/build/server", str(n_hospitals)])
